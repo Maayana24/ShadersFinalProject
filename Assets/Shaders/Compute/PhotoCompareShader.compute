@@ -1,0 +1,24 @@
+#pragma kernel Compare
+
+Texture2D<float4> _Reference;
+Texture2D<float4> _Captured;
+RWStructuredBuffer<uint> _TotalDiff;
+RWStructuredBuffer<uint> _TotalPixels;
+
+int _Width;
+int _Height;
+
+[numthreads(8, 8, 1)]
+void Compare(uint3 id : SV_DispatchThreadID)
+{
+    if ((int) id.x >= _Width || (int) id.y >= _Height)
+        return;
+
+    float4 refColor = _Reference[id.xy];
+    float4 capColor = _Captured[id.xy];
+
+    float diff = abs(refColor.r - capColor.r) + abs(refColor.g - capColor.g) + abs(refColor.b - capColor.b);
+
+    InterlockedAdd(_TotalDiff[0], (uint) (diff * 10000.0));
+    InterlockedAdd(_TotalPixels[0], 1);
+}
