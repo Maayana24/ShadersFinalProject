@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,7 @@ public class ItemButton : MonoBehaviour
 {
     [SerializeField] private Item item;
     [SerializeField] private UIManager uiManager;
+    [SerializeField] private Image buttonImage;
     [SerializeField] private Button button;
 
     public Item Item => item;

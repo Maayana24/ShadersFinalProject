@@ -1,16 +1,19 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private RawImage[] images;
     [SerializeField] private ImagePool pool;
+
     [SerializeField] private Camera sheepCamera;
     [SerializeField] private LayerMask sheepLayer;
+    [SerializeField] private Image cursor;
 
     private Item currentItem;
     private ItemButton currentButton;
-    private GameObject draggableInstance;
 
     public bool IsHoldingItem => currentItem != null;
 
@@ -22,15 +25,18 @@ public class UIManager : MonoBehaviour
         images[1].texture = pool.Images[index].Left;
     }
 
+    void Awake()
+    {
+        cursor.gameObject.SetActive(false);
+    }
+
     void Update()
     {
         if (!IsHoldingItem) return;
 
-        Vector3 mouseScreen = new Vector3(Input.mousePosition.x, Input.mousePosition.y, currentItem.DistanceFromCamera);
-        Vector3 worldPoint = sheepCamera.ScreenToWorldPoint(mouseScreen);
-        draggableInstance.transform.position = worldPoint;
+        cursor.rectTransform.position = Mouse.current.position.ReadValue();
 
-        if (Input.GetMouseButtonDown(0))
+        if (Mouse.current.leftButton.isPressed && !EventSystem.current.IsPointerOverGameObject())
             TryApplyEffect();
     }
 
@@ -51,25 +57,21 @@ public class UIManager : MonoBehaviour
         currentItem = button.Item;
         currentButton = button;
 
-        draggableInstance = Instantiate(currentItem.CursorPrefab);
-        draggableInstance.transform.SetParent(sheepCamera.transform);
+        cursor.sprite = currentItem.Cursor;
+        cursor.color = currentItem is ColorSpray spray ? spray.Color : Color.white;
+        cursor.gameObject.SetActive(true);
     }
 
     private void DropItem()
     {
-        if (draggableInstance != null)
-        {
-            Destroy(draggableInstance);
-            draggableInstance = null;
-        }
-
+        cursor.gameObject.SetActive(false);
         currentItem = null;
         currentButton = null;
     }
 
     private void TryApplyEffect()
     {
-        Ray ray = sheepCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = sheepCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, sheepLayer))
             currentItem.ApplyEffect(hit.point, hit.collider.gameObject);

@@ -49,24 +49,6 @@ public class CaptureImage : MonoBehaviour
         RenderTexture.active = previousActive;
     }
 
-    void OnGUI()
-    {
-        if (!showDebug) return;
-
-        var (w, h) = GetCaptureDimensions();
-        int x = (Screen.width - w) / 2;
-        int y = (Screen.height - h) / 2;
-        float guiY = Screen.height - y - h;
-        float b = 3f;
-
-        GUI.color = Color.red;
-        GUI.DrawTexture(new Rect(x, guiY, w, b), Texture2D.whiteTexture);
-        GUI.DrawTexture(new Rect(x, guiY + h, w, b), Texture2D.whiteTexture);
-        GUI.DrawTexture(new Rect(x, guiY, b, h), Texture2D.whiteTexture);
-        GUI.DrawTexture(new Rect(x + w, guiY, b, h + b), Texture2D.whiteTexture);
-        GUI.color = Color.white;
-    }
-
     void OnDestroy()
     {
         if (lastCapture != null) Destroy(lastCapture);

@@ -25,9 +25,10 @@ public class ColorSpray : Item
          { SprayColor.Black,  Color.black  },
     };
 
-    public Color GetColor() => ColorMap[sprayColor];
+    public Color Color => ColorMap[sprayColor];
 
     public override void ApplyEffect(Vector3 worldHitPosition, GameObject hitObject)
     {
+        Debug.Log($"Spray bottle: {sprayColor.ToString()}");
     }
 }
