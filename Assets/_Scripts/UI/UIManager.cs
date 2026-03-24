@@ -17,20 +17,17 @@ public class UIManager : MonoBehaviour
 
     public bool IsHoldingItem => currentItem != null;
 
-    [ContextMenu("ChangeImage")]
-    public void ChangeImage()
-    {
-        int index = Random.Range(0, pool.Images.Count);
-        images[0].texture = pool.Images[index].Right;
-        images[1].texture = pool.Images[index].Left;
-    }
-
-    void Awake()
+    private void Awake()
     {
         cursor.gameObject.SetActive(false);
     }
 
-    void Update()
+    private void Start()
+    {
+        ChangeImage();
+    }
+
+    private void Update()
     {
         if (!IsHoldingItem) return;
 
@@ -38,6 +35,14 @@ public class UIManager : MonoBehaviour
 
         if (Mouse.current.leftButton.isPressed && !EventSystem.current.IsPointerOverGameObject())
             TryApplyEffect();
+    }
+
+    [ContextMenu("ChangeImage")]
+    public void ChangeImage()
+    {
+        int index = Random.Range(0, pool.Images.Count);
+        images[0].texture = pool.Images[index].Right;
+        images[1].texture = pool.Images[index].Left;
     }
 
     public void OnItemButtonClicked(ItemButton button)

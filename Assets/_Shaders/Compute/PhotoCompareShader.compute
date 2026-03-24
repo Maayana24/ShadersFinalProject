@@ -5,6 +5,7 @@ Texture2D<float4> _Captured;
 RWStructuredBuffer<int> _TotalDiff;
 RWStructuredBuffer<int> _TotalPixels;
 
+float _Tolerance;
 int _Width;
 int _Height;
 
@@ -17,8 +18,13 @@ void Compare(int3 id : SV_DispatchThreadID)
     float4 refColor = _Reference[id.xy];
     float4 capColor = _Captured[id.xy];
 
-    float diff = abs(refColor.r - capColor.r) + abs(refColor.g - capColor.g) + abs(refColor.b - capColor.b);
+    float3 d = abs(refColor.rgb - capColor.rgb);
+    float diff = (d.r + d.g + d.b) / 3.0;
 
-    InterlockedAdd(_TotalDiff[0], (int) (diff * 10000.0));
+    if (diff > _Tolerance)
+    {
+        InterlockedAdd(_TotalDiff[0], 1);
+    }
+
     InterlockedAdd(_TotalPixels[0], 1);
 }

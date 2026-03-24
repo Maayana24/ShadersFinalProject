@@ -10,8 +10,8 @@ public class PhotoCompare : MonoBehaviour
     [SerializeField] private ComputeShader compareShader;
     [SerializeField] private TextMeshProUGUI resultText;
     [SerializeField] private Camera[] cameras;
-    [SerializeField][Range(0.01f, 1f)] private float threshold = 0.20f;
-    [SerializeField][Range(1f, 10f)] private float power = 2;
+    [SerializeField][Range(0.01f, 1)] private float threshold = 0.20f;
+    [SerializeField][Range(1, 10)] private float power = 2;
     [SerializeField] private bool isHighDifficulty = false;
 
     private ComputeBuffer _totalDiffBuffer;
@@ -33,23 +33,35 @@ public class PhotoCompare : MonoBehaviour
 
     private float ComputeScore(Texture2D captured, Texture2D reference)
     {
-        RenderTexture capturedRT = new RenderTexture(reference.width, reference.height, 0, RenderTextureFormat.ARGB32);
+        int compareSize = isHighDifficulty ? 512 : 64;
+
+        RenderTexture capturedRT = new RenderTexture(compareSize, compareSize, 0, RenderTextureFormat.ARGB32);
+        capturedRT.filterMode = FilterMode.Point;
         capturedRT.enableRandomWrite = true;
         capturedRT.Create();
         Graphics.Blit(captured, capturedRT);
 
+        RenderTexture referenceRT = new RenderTexture(compareSize, compareSize, 0, RenderTextureFormat.ARGB32);
+        referenceRT.filterMode = FilterMode.Point;
+        referenceRT.enableRandomWrite = true;
+        referenceRT.Create();
+        Graphics.Blit(reference, referenceRT);
+
         _totalDiffBuffer.SetData(new int[] { 0 });
         _totalPixelsBuffer.SetData(new int[] { 0 });
 
-        compareShader.SetTexture(_kernelIndex, "_Reference", reference);
+        compareShader.SetTexture(_kernelIndex, "_Reference", referenceRT);
         compareShader.SetTexture(_kernelIndex, "_Captured", capturedRT);
         compareShader.SetBuffer(_kernelIndex, "_TotalDiff", _totalDiffBuffer);
         compareShader.SetBuffer(_kernelIndex, "_TotalPixels", _totalPixelsBuffer);
-        compareShader.SetInt("_Width", reference.width);
-        compareShader.SetInt("_Height", reference.height);
+        compareShader.SetInt("_Width", compareSize);
+        compareShader.SetInt("_Height", compareSize);
 
-        int groupsX = Mathf.CeilToInt(reference.width / 8f);
-        int groupsY = Mathf.CeilToInt(reference.height / 8f);
+        float tolerance = isHighDifficulty ? 0.01f : 0.04f;
+        compareShader.SetFloat("_Tolerance", tolerance);
+
+        int groupsX = Mathf.CeilToInt(compareSize / 8);
+        int groupsY = Mathf.CeilToInt(compareSize / 8);
         compareShader.Dispatch(_kernelIndex, groupsX, groupsY, 1);
 
         int[] diff = new int[1];
@@ -58,15 +70,15 @@ public class PhotoCompare : MonoBehaviour
         _totalPixelsBuffer.GetData(pixels);
 
         capturedRT.Release();
+        referenceRT.Release();
 
-        float avgDiff = (diff[0] / 10000f) / pixels[0] / 3f;
-        float remapped = 1f - Mathf.Clamp01(avgDiff / threshold);
-        return Mathf.Pow(remapped, power);
+        float wrongPixelRatio = (float)diff[0] / pixels[0];
+        return 1f - wrongPixelRatio;
     }
 
     private IEnumerator CaptureAndCompare()
     {
-        float totalScore = 0f;
+        float totalScore = 0;
         captureImage.SetSize(isHighDifficulty ? 512 : 64);
 
         for (int i = 0; i < cameras.Length; i++)
