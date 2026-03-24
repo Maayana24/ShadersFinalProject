@@ -26,7 +26,7 @@ public class ColorSpray : Item
     };
 
     public Color Color => ColorMap[sprayColor];
-
+    public override Particles Type { get; protected set; } = Particles.Spray;
     public override void ApplyEffect(Vector3 worldHitPosition, GameObject hitObject)
     {
         Debug.Log($"Spray bottle: {sprayColor.ToString()}");

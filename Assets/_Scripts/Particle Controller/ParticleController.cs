@@ -26,6 +26,10 @@ public class ParticleController : MonoBehaviour
         }
     }
 
+    public void SetPosition(Vector3 position)
+    {
+        effects[currentParticleSystem].transform.position = position;
+    }
 
     //Call when the player changes their tool
     public void SetTool(Particles particleType)

@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private RawImage[] images;
     [SerializeField] private ImagePool pool;
+    [SerializeField] private ParticleController particleController;
 
     [SerializeField] private Camera sheepCamera;
     [SerializeField] private LayerMask sheepLayer;
@@ -17,6 +18,7 @@ public class UIManager : MonoBehaviour
     private Item currentItem;
     private ItemButton currentButton;
     private bool isHighDifficulty = false;
+    private bool isPlayingParticles = false;
 
     private bool IsHoldingItem => currentItem != null;
 
@@ -32,15 +34,37 @@ public class UIManager : MonoBehaviour
         ChangeImage();
         UIScoreManager.OnRestart += OnRestart;
     }
-
     private void Update()
     {
         if (!IsHoldingItem) return;
 
         cursor.rectTransform.position = Mouse.current.position.ReadValue();
 
-        if (Mouse.current.leftButton.isPressed && !EventSystem.current.IsPointerOverGameObject())
-            TryApplyEffect();
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+
+        if (Mouse.current.leftButton.isPressed)
+        {
+            bool hitSheep = TryApplyEffect(out Vector3 hit);
+
+            if (hitSheep)
+                particleController.SetPosition(hit);
+
+            if (Mouse.current.leftButton.wasPressedThisFrame && hitSheep)
+            {
+                particleController.Play();
+                isPlayingParticles = true;
+            }
+            else if (!hitSheep && isPlayingParticles)
+            {
+                particleController.Stop();
+                isPlayingParticles = false;
+            }
+        }
+        else if (Mouse.current.leftButton.wasReleasedThisFrame && isPlayingParticles)
+        {
+            particleController.Stop();
+            isPlayingParticles = false;
+        }
     }
 
     private void OnRestart()
@@ -82,8 +106,17 @@ public class UIManager : MonoBehaviour
         currentButton = button;
 
         cursor.sprite = currentItem.Cursor;
-        cursor.color = currentItem is ColorSpray spray ? spray.Color : Color.white;
+        if(currentItem is ColorSpray spray)
+        {
+            cursor.color = spray.Color;
+            particleController.SetCanColor(spray.Color);
+        }
+        else
+        {
+            cursor.color = Color.white;
+        }
         cursor.gameObject.SetActive(true);
+        particleController.SetTool(currentItem.Type);
     }
 
     private void DropItem()
@@ -93,12 +126,17 @@ public class UIManager : MonoBehaviour
         currentButton = null;
     }
 
-    private void TryApplyEffect()
+    private bool TryApplyEffect(out Vector3 hitPoint)
     {
         Ray ray = sheepCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, sheepLayer))
+        {
+            hitPoint = hit.point;
             currentItem.ApplyEffect(hit.point, hit.collider.gameObject);
+            return true;
+        }
+        hitPoint = Vector3.zero;
+        return false;
     }
 
     private void OnDestroy()
