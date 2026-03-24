@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -14,21 +15,30 @@ public class PhotoCompare : MonoBehaviour
     [SerializeField][Range(1, 10)] private float power = 2;
     [SerializeField] private bool isHighDifficulty = false;
 
-    private ComputeBuffer _totalDiffBuffer;
-    private ComputeBuffer _totalPixelsBuffer;
+    private ComputeBuffer totalDiffBuffer;
+    private ComputeBuffer totalPixelsBuffer;
     private int _kernelIndex;
+
+    public static event Action<float> OnScore;
 
     void Start()
     {
         _kernelIndex = compareShader.FindKernel("Compare");
-        _totalDiffBuffer = new ComputeBuffer(1, sizeof(int));
-        _totalPixelsBuffer = new ComputeBuffer(1, sizeof(int));
+        totalDiffBuffer = new ComputeBuffer(1, sizeof(int));
+        totalPixelsBuffer = new ComputeBuffer(1, sizeof(int));
+
+        UIManager.OnDifficultyChange += ChangeDifficulty;
     }
 
     [ContextMenu("Compare")]
     public void OnCheckButtonClicked()
     {
         StartCoroutine(CaptureAndCompare());
+    }
+
+    private void ChangeDifficulty(bool value)
+    {
+        isHighDifficulty = value;
     }
 
     private float ComputeScore(Texture2D captured, Texture2D reference)
@@ -47,13 +57,13 @@ public class PhotoCompare : MonoBehaviour
         referenceRT.Create();
         Graphics.Blit(reference, referenceRT);
 
-        _totalDiffBuffer.SetData(new int[] { 0 });
-        _totalPixelsBuffer.SetData(new int[] { 0 });
+        totalDiffBuffer.SetData(new int[] { 0 });
+        totalPixelsBuffer.SetData(new int[] { 0 });
 
         compareShader.SetTexture(_kernelIndex, "_Reference", referenceRT);
         compareShader.SetTexture(_kernelIndex, "_Captured", capturedRT);
-        compareShader.SetBuffer(_kernelIndex, "_TotalDiff", _totalDiffBuffer);
-        compareShader.SetBuffer(_kernelIndex, "_TotalPixels", _totalPixelsBuffer);
+        compareShader.SetBuffer(_kernelIndex, "_TotalDiff", totalDiffBuffer);
+        compareShader.SetBuffer(_kernelIndex, "_TotalPixels", totalPixelsBuffer);
         compareShader.SetInt("_Width", compareSize);
         compareShader.SetInt("_Height", compareSize);
 
@@ -66,13 +76,14 @@ public class PhotoCompare : MonoBehaviour
 
         int[] diff = new int[1];
         int[] pixels = new int[1];
-        _totalDiffBuffer.GetData(diff);
-        _totalPixelsBuffer.GetData(pixels);
+        totalDiffBuffer.GetData(diff);
+        totalPixelsBuffer.GetData(pixels);
 
         capturedRT.Release();
         referenceRT.Release();
 
         float wrongPixelRatio = (float)diff[0] / pixels[0];
+        OnScore?.Invoke(1f - wrongPixelRatio);
         return 1f - wrongPixelRatio;
     }
 
@@ -97,7 +108,9 @@ public class PhotoCompare : MonoBehaviour
 
     void OnDestroy()
     {
-        _totalDiffBuffer?.Release();
-        _totalPixelsBuffer?.Release();
+        totalDiffBuffer?.Release();
+        totalPixelsBuffer?.Release();
+        UIManager.OnDifficultyChange -= ChangeDifficulty;
+
     }
 }

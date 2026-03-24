@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,11 +12,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Camera sheepCamera;
     [SerializeField] private LayerMask sheepLayer;
     [SerializeField] private Image cursor;
+    [SerializeField] private TextMeshProUGUI difficultyText;
 
     private Item currentItem;
     private ItemButton currentButton;
+    private bool isHighDifficulty = false;
 
-    public bool IsHoldingItem => currentItem != null;
+    private bool IsHoldingItem => currentItem != null;
+
+    public static event System.Action<bool> OnDifficultyChange;
 
     private void Awake()
     {
@@ -25,6 +30,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         ChangeImage();
+        UIScoreManager.OnRestart += OnRestart;
     }
 
     private void Update()
@@ -35,6 +41,19 @@ public class UIManager : MonoBehaviour
 
         if (Mouse.current.leftButton.isPressed && !EventSystem.current.IsPointerOverGameObject())
             TryApplyEffect();
+    }
+
+    private void OnRestart()
+    {
+        DropItem();
+        ChangeImage();
+    }
+
+    public void OnChangeDifficulty()
+    {
+        isHighDifficulty = !isHighDifficulty;
+        difficultyText.text = isHighDifficulty ? "Difficulty: High" : "Difficulty: Low";
+        OnDifficultyChange?.Invoke(isHighDifficulty);
     }
 
     [ContextMenu("ChangeImage")]
@@ -80,5 +99,10 @@ public class UIManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, sheepLayer))
             currentItem.ApplyEffect(hit.point, hit.collider.gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        UIScoreManager.OnRestart -= OnRestart;
     }
 }
