@@ -518,6 +518,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
+  radius: 0.1
   sprayColor: 1
 --- !u!1001 &44427036
 PrefabInstance:
@@ -7438,6 +7439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
+  radius: 0.1
   sprayColor: 2
 --- !u!1001 &821883379
 PrefabInstance:
@@ -7640,6 +7642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
+  radius: 0.1
   sprayColor: 4
 --- !u!1001 &842062159
 PrefabInstance:
@@ -8274,6 +8277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
+  radius: 0.1
   sprayColor: 0
 --- !u!1001 &939985912
 PrefabInstance:
@@ -9544,7 +9548,7 @@ Transform:
   m_GameObject: {fileID: 1136385240}
   serializedVersion: 2
   m_LocalRotation: {x: 0.01566695, y: 0.81390405, z: -0.054485034, w: -0.57822675}
-  m_LocalPosition: {x: 0.885, y: 0.729, z: 3.955}
+  m_LocalPosition: {x: 0.81, y: 0.74, z: 4.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13815,6 +13819,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scissors
   cursor: {fileID: 21300000, guid: 14862c28db865e64380794b7321f8841, type: 3}
+  radius: 0.1
 --- !u!1001 &1636784209
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14566,6 +14571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WoolGrower
   cursor: {fileID: 21300000, guid: 75dfd267240b02e49bf0cc45ffa610e2, type: 3}
+  radius: 0.1
 --- !u!1001 &1780823651
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15449,6 +15455,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
+  radius: 0.1
   sprayColor: 5
 --- !u!1001 &1825182556
 PrefabInstance:
@@ -17021,6 +17028,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
+  radius: 0.1
   sprayColor: 3
 --- !u!1001 &2020691580
 PrefabInstance:

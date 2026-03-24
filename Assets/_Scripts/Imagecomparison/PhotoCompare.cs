@@ -21,8 +21,8 @@ public class PhotoCompare : MonoBehaviour
     void Start()
     {
         _kernelIndex = compareShader.FindKernel("Compare");
-        _totalDiffBuffer = new ComputeBuffer(1, sizeof(uint));
-        _totalPixelsBuffer = new ComputeBuffer(1, sizeof(uint));
+        _totalDiffBuffer = new ComputeBuffer(1, sizeof(int));
+        _totalPixelsBuffer = new ComputeBuffer(1, sizeof(int));
     }
 
     [ContextMenu("Compare")]
@@ -38,8 +38,8 @@ public class PhotoCompare : MonoBehaviour
         capturedRT.Create();
         Graphics.Blit(captured, capturedRT);
 
-        _totalDiffBuffer.SetData(new uint[] { 0 });
-        _totalPixelsBuffer.SetData(new uint[] { 0 });
+        _totalDiffBuffer.SetData(new int[] { 0 });
+        _totalPixelsBuffer.SetData(new int[] { 0 });
 
         compareShader.SetTexture(_kernelIndex, "_Reference", reference);
         compareShader.SetTexture(_kernelIndex, "_Captured", capturedRT);
@@ -52,8 +52,8 @@ public class PhotoCompare : MonoBehaviour
         int groupsY = Mathf.CeilToInt(reference.height / 8f);
         compareShader.Dispatch(_kernelIndex, groupsX, groupsY, 1);
 
-        uint[] diff = new uint[1];
-        uint[] pixels = new uint[1];
+        int[] diff = new int[1];
+        int[] pixels = new int[1];
         _totalDiffBuffer.GetData(diff);
         _totalPixelsBuffer.GetData(pixels);
 
