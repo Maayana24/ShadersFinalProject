@@ -13,5 +13,9 @@ MonoBehaviour:
   m_Name: ImagePool
   m_EditorClassIdentifier: Assembly-CSharp::ImagePool
   Images:
-  - {fileID: 2800000, guid: 6f7ef40dc11437b4b9ef0f5639b8d95a, type: 3}
-  - {fileID: 2800000, guid: f06ba84a09c38da429010eb3814fbaea, type: 3}
+  - Right: {fileID: 2800000, guid: a38d25b68e9025048915b07acd03fed7, type: 3}
+    Left: {fileID: 2800000, guid: f54bb89bcfdea2247b04b289ba5425fa, type: 3}
+  - Right: {fileID: 2800000, guid: f88c5ce854e3b5142afea4803ed39be8, type: 3}
+    Left: {fileID: 2800000, guid: 7723fc70b4d4f154da5bbc04104b7086, type: 3}
+  - Right: {fileID: 2800000, guid: 5f04e49b423cb3442b1333d185242610, type: 3}
+    Left: {fileID: 2800000, guid: ccd8859962c00ef4e80de9489baf5ae3, type: 3}
