@@ -12,6 +12,7 @@ public class CaptureImage : MonoBehaviour
     private RenderTexture renderTexture;
 
     public Texture2D LastCapture => lastCapture;
+    public void SetSize(int newSize) { size = newSize; }
 
     private (int w, int h) GetCaptureDimensions()
     {

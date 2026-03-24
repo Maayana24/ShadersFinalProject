@@ -12,6 +12,7 @@ public class PhotoCompare : MonoBehaviour
     [SerializeField] private Camera[] cameras;
     [SerializeField][Range(0.01f, 1f)] private float threshold = 0.20f;
     [SerializeField][Range(1f, 10f)] private float power = 2;
+    [SerializeField] private bool isHighDifficulty = false;
 
     private ComputeBuffer _totalDiffBuffer;
     private ComputeBuffer _totalPixelsBuffer;
@@ -66,6 +67,7 @@ public class PhotoCompare : MonoBehaviour
     private IEnumerator CaptureAndCompare()
     {
         float totalScore = 0f;
+        captureImage.SetSize(isHighDifficulty ? 512 : 64);
 
         for (int i = 0; i < cameras.Length; i++)
         {
