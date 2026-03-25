@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
     private float height;
     private float tiltOffset;
 
-    void Start()
+    private void Start()
     {
         Vector3 offset = transform.position - target.position;
         radius = new Vector2(offset.x, offset.z).magnitude;
@@ -27,7 +27,7 @@ public class CameraController : MonoBehaviour
         slider.onValueChanged.AddListener(MoveCamera);
     }
 
-    void MoveCamera(float value)
+    private void MoveCamera(float value)
     {
         float angle = value * 360 * Mathf.Deg2Rad;
 

@@ -14,8 +14,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private LayerMask sheepLayer;
     [SerializeField] private Image cursor;
     [SerializeField] private TextMeshProUGUI difficultyText;
-    [SerializeField][Range(0.01f, 1f)]  private float brushRadius   = 0.15f;
-    [SerializeField][Range(0.01f, 10f)] private float brushStrength = 2f;
+    [SerializeField] private Slider radiusSlider;
+    [SerializeField] private Slider strengthSlider;
+    [SerializeField] private float brushRadius   = 0.15f;
+    [SerializeField] private float brushStrength = 2f;
 
     private Item currentItem;
     private ItemButton currentButton;
@@ -43,6 +45,8 @@ public class UIManager : MonoBehaviour
     {
         ChangeImage();
         UIScoreManager.OnRestart += OnRestart;
+        radiusSlider.onValueChanged.AddListener(ChangeBrushRadius);
+        strengthSlider.onValueChanged.AddListener(ChangeBrushStrength);
     }
     private void Update()
     {
@@ -128,6 +132,16 @@ public class UIManager : MonoBehaviour
         isHighDifficulty = !isHighDifficulty;
         difficultyText.text = isHighDifficulty ? "Difficulty: High" : "Difficulty: Low";
         OnDifficultyChange?.Invoke(isHighDifficulty);
+    }
+
+    public void ChangeBrushRadius(float radius)
+    {
+        brushRadius = radius;
+    }
+
+    public void ChangeBrushStrength(float strength)
+    {
+        brushStrength = strength;
     }
 
     [ContextMenu("ChangeImage")]
