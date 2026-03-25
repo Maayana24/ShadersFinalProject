@@ -132,7 +132,9 @@ public class UIManager : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, sheepLayer))
         {
             hitPoint = hit.point;
-            currentItem.ApplyEffect(hit.point, hit.collider.gameObject);
+            Vector2 uv = hit.textureCoord;
+            Debug.Log($"[UIManager] Hit: worldPos={hitPoint}, uv={uv}");
+            currentItem.ApplyEffect(hit.point, uv, hit.collider.gameObject);
             return true;
         }
         hitPoint = Vector3.zero;

@@ -3,8 +3,8 @@ using UnityEngine;
 public class WoolGrower : Item
 {
     public override Particles Type { get; protected set; } = Particles.Sparkles;
-    public override void ApplyEffect(Vector3 worldHitPosition, GameObject hitObject)
+    public override void ApplyEffect(Vector3 worldHitPosition, Vector2 uv, GameObject hitObject)
     {
-        Debug.Log("Wool Grower!");
+        Debug.Log($"Wool Grower! worldPos={worldHitPosition}, uv={uv}");
     }
 }
