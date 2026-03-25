@@ -90,6 +90,8 @@ public class SheepWoolManager : MonoBehaviour
         mat.SetFloat("_TessDistMax",     tessDistMax);
     }
 
+    public float GetUVRadius(float worldRadius) => worldRadius * worldToUVScale;
+
     public void PaintGrowth(Vector2 uv, float worldRadius, float strength)
     {
         float uvRadius = worldRadius * worldToUVScale;

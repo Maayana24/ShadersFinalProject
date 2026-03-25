@@ -34,6 +34,11 @@ Shader "Custom/WoolTessellation"
             float _TessDistMax;
         CBUFFER_END
 
+        // Set globally by UIManager each frame — not per-material
+        float4 _BrushUV;
+        float  _BrushRadius;
+        float  _BrushActive;
+
         #include "Tessellation.hlsl"
 
         TessControlPoint SharedVert(Attributes IN)
@@ -134,6 +139,14 @@ Shader "Custom/WoolTessellation"
 
                 half4 color = UniversalFragmentPBR(inputData, surfaceData);
                 color.rgb = MixFog(color.rgb, inputData.fogCoord);
+
+                // Brush preview rim
+                float brushDist = length(IN.uv - _BrushUV.xy);
+                float rimWidth = max(_BrushRadius * 0.08, 0.003);
+                float rim = smoothstep(_BrushRadius - rimWidth, _BrushRadius, brushDist)
+                          * (1.0 - smoothstep(_BrushRadius, _BrushRadius + rimWidth, brushDist));
+                color.rgb = lerp(color.rgb, half3(1, 1, 1), rim * _BrushActive);
+
                 return color;
             }
             ENDHLSL

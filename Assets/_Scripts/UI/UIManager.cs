@@ -42,31 +42,71 @@ public class UIManager : MonoBehaviour
     }
     private void Update()
     {
-        if (!IsHoldingItem) return;
+        if (!IsHoldingItem)
+        {
+            Shader.SetGlobalFloat("_BrushActive", 0f);
+            return;
+        }
 
         cursor.rectTransform.position = Mouse.current.position.ReadValue();
 
-        if (EventSystem.current.IsPointerOverGameObject()) return;
-
-        if (Mouse.current.leftButton.isPressed)
+        if (EventSystem.current.IsPointerOverGameObject())
         {
-            bool hitSheep = TryApplyEffect(out Vector3 hit);
+            Shader.SetGlobalFloat("_BrushActive", 0f);
+            return;
+        }
 
-            if (hitSheep)
-                particleController.SetPosition(hit);
+        Ray ray = sheepCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        _gizmoRay = ray;
 
-            if (Mouse.current.leftButton.wasPressedThisFrame && hitSheep)
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, sheepLayer))
+        {
+            Vector2 uv = hit.textureCoord;
+            SheepWoolManager woolManager = hit.collider.GetComponentInParent<SheepWoolManager>();
+
+            _gizmoHitPoint = hit.point;
+            _gizmoHitNormal = hit.normal;
+            _gizmoHasHit = true;
+
+            if (woolManager != null)
             {
-                particleController.Play();
-                isPlayingParticles = true;
+                Shader.SetGlobalVector("_BrushUV", new Vector4(uv.x, uv.y, 0f, 0f));
+                Shader.SetGlobalFloat("_BrushRadius", woolManager.GetUVRadius(currentItem.Radius));
+                Shader.SetGlobalFloat("_BrushActive", 1f);
             }
-            else if (!hitSheep && isPlayingParticles)
+
+            particleController.SetPosition(hit.point);
+
+            if (Mouse.current.leftButton.isPressed)
+            {
+                if (woolManager == null)
+                    Debug.LogWarning($"[UIManager] No SheepWoolManager on {hit.collider.gameObject.name} or its parents");
+                else
+                {
+                    Debug.Log($"[UIManager] Hit: worldPos={hit.point}, uv={uv}");
+                    currentItem.ApplyEffect(hit.point, uv, woolManager);
+                }
+
+                if (Mouse.current.leftButton.wasPressedThisFrame)
+                {
+                    particleController.Play();
+                    isPlayingParticles = true;
+                }
+            }
+        }
+        else
+        {
+            Shader.SetGlobalFloat("_BrushActive", 0f);
+            _gizmoHasHit = false;
+
+            if (isPlayingParticles)
             {
                 particleController.Stop();
                 isPlayingParticles = false;
             }
         }
-        else if (Mouse.current.leftButton.wasReleasedThisFrame && isPlayingParticles)
+
+        if (Mouse.current.leftButton.wasReleasedThisFrame && isPlayingParticles)
         {
             particleController.Stop();
             isPlayingParticles = false;
@@ -132,28 +172,6 @@ public class UIManager : MonoBehaviour
         currentButton = null;
     }
 
-    private bool TryApplyEffect(out Vector3 hitPoint)
-    {
-        Ray ray = sheepCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-        _gizmoRay = ray;
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, sheepLayer))
-        {
-            hitPoint = hit.point;
-            Vector2 uv = hit.textureCoord;
-            SheepWoolManager woolManager = hit.collider.GetComponentInParent<SheepWoolManager>();
-            if (woolManager == null) { Debug.LogWarning($"[UIManager] No SheepWoolManager on {hit.collider.gameObject.name} or its parents"); return false; }
-            Debug.Log($"[UIManager] Hit: worldPos={hitPoint}, uv={uv}");
-            currentItem.ApplyEffect(hit.point, uv, woolManager);
-
-            _gizmoHitPoint = hit.point;
-            _gizmoHitNormal = hit.normal;
-            _gizmoHasHit = true;
-            return true;
-        }
-        hitPoint = Vector3.zero;
-        _gizmoHasHit = false;
-        return false;
-    }
 
     private void OnDrawGizmos()
     {
