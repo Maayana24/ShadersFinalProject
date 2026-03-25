@@ -10,15 +10,18 @@ public class SheepWoolManager : MonoBehaviour
     [Header("Texture")]
     [SerializeField] private int textureSize = 512;
     [SerializeField] private Color baseWoolColor = Color.white;
+    [SerializeField] private float noiseScale = 8f;
+    [SerializeField] private float noiseMin = 0.4f;
+    [SerializeField] private float noiseMax = 1f;
 
     [Header("Displacement")]
     [SerializeField] private float maxDisplacement = 0.3f;
 
     [Header("Tessellation")]
-    [SerializeField, Range(1, 16)] private float tessMin     = 1f;
-    [SerializeField, Range(1, 64)] private float tessMax     = 8f;
-    [SerializeField]               private float tessDistMin = 2f;
-    [SerializeField]               private float tessDistMax = 15f;
+    [SerializeField, Range(1, 16)] private float tessMin = 1f;
+    [SerializeField, Range(1, 64)] private float tessMax = 8f;
+    [SerializeField] private float tessDistMin = 2f;
+    [SerializeField] private float tessDistMax = 15f;
 
     public float MaxDisplacement => maxDisplacement;
     public RenderTexture WoolTexture => woolRT;
@@ -30,7 +33,7 @@ public class SheepWoolManager : MonoBehaviour
 
     private void OnValidate()
     {
-        if (woolRenderer  == null) woolRenderer  = GetComponentInChildren<Renderer>();
+        if (woolRenderer == null) woolRenderer = GetComponentInChildren<Renderer>();
         if (woolMeshFilter == null) woolMeshFilter = GetComponentInChildren<MeshFilter>();
         if (woolMeshCollider == null) woolMeshCollider = GetComponentInChildren<MeshCollider>();
         if (woolRenderer != null) PushToMaterial(woolRenderer.sharedMaterial);
@@ -59,19 +62,37 @@ public class SheepWoolManager : MonoBehaviour
             worldToUVScale = 1f;
     }
 
-    // Clears the wool texture to (baseWoolColor, alpha=0) — no growth, uniform base color.
+    // Seeds the wool texture with Perlin noise on the CPU — no shader dependency.
     private void InitializeTexture()
     {
-        RenderTexture prev = RenderTexture.active;
-        RenderTexture.active = woolRT;
-        GL.Clear(false, true, new Color(baseWoolColor.r, baseWoolColor.g, baseWoolColor.b, 0f));
-        RenderTexture.active = prev;
+        float offsetX = Random.value * 100f;
+        float offsetY = Random.value * 100f;
+
+        Color[] pixels = new Color[textureSize * textureSize];
+        for (int y = 0; y < textureSize; y++)
+        {
+            for (int x = 0; x < textureSize; x++)
+            {
+                float v = y / (float)textureSize;
+                float nx = (x / (float)textureSize + offsetX) * noiseScale;
+                float ny = (v + offsetY) * noiseScale;
+                float growth = Mathf.Lerp(noiseMin, noiseMax, Mathf.PerlinNoise(nx, ny));
+                float edge = Mathf.InverseLerp(1f, 0.9f, v);
+                pixels[y * textureSize + x] = new Color(baseWoolColor.r, baseWoolColor.g, baseWoolColor.b, growth * edge);
+            }
+        }
+
+        Texture2D noiseTex = new Texture2D(textureSize, textureSize, TextureFormat.ARGB32, false);
+        noiseTex.SetPixels(pixels);
+        noiseTex.Apply();
+        Graphics.Blit(noiseTex, woolRT);
+        Destroy(noiseTex);
     }
 
     private Mesh BuildInflatedMesh(Mesh source)
     {
         inflatedColliderMesh = Instantiate(source);
-        Vector3[] verts   = inflatedColliderMesh.vertices;
+        Vector3[] verts = inflatedColliderMesh.vertices;
         Vector3[] normals = inflatedColliderMesh.normals;
         for (int i = 0; i < verts.Length; i++)
             verts[i] += normals[i] * maxDisplacement;
@@ -84,10 +105,10 @@ public class SheepWoolManager : MonoBehaviour
     {
         if (mat == null) return;
         mat.SetFloat("_MaxDisplacement", maxDisplacement);
-        mat.SetFloat("_TessMin",         tessMin);
-        mat.SetFloat("_TessMax",         tessMax);
-        mat.SetFloat("_TessDistMin",     tessDistMin);
-        mat.SetFloat("_TessDistMax",     tessDistMax);
+        mat.SetFloat("_TessMin", tessMin);
+        mat.SetFloat("_TessMax", tessMax);
+        mat.SetFloat("_TessDistMin", tessDistMin);
+        mat.SetFloat("_TessDistMax", tessDistMax);
     }
 
     public float GetUVRadius(float worldRadius) => worldRadius * worldToUVScale;
