@@ -15,3 +15,4 @@ MonoBehaviour:
   Images:
   - Right: {fileID: 2800000, guid: 3f0a9d22752775e4a87674402016a502, type: 3}
     Left: {fileID: 2800000, guid: 8bbd5616e7c9e8942b430c9df88c9aa7, type: 3}
+    WoolTexture: {fileID: 2800000, guid: 4bbf2e59177d7b007860c644181e9cac, type: 3}

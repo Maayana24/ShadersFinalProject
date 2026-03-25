@@ -14,4 +14,5 @@ public struct ImageReference
 {
     public Texture2D Right;
     public Texture2D Left;
+    public Texture2D WoolTexture;
 }

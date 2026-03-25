@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour
     private bool IsHoldingItem => currentItem != null;
 
     public static event System.Action<bool> OnDifficultyChange;
+    public static event System.Action<ImageReference> OnImageChanged;
 
     private void Awake()
     {
@@ -129,9 +130,12 @@ public class UIManager : MonoBehaviour
     [ContextMenu("ChangeImage")]
     public void ChangeImage()
     {
+        if (pool.Images.Count == 0) return;
         int index = Random.Range(0, pool.Images.Count);
-        images[0].texture = pool.Images[index].Right;
-        images[1].texture = pool.Images[index].Left;
+        ImageReference reference = pool.Images[index];
+        images[0].texture = reference.Right;
+        images[1].texture = reference.Left;
+        OnImageChanged?.Invoke(reference);
     }
 
     public void OnItemButtonClicked(ItemButton button)

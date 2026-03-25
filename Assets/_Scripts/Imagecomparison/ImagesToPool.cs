@@ -7,6 +7,7 @@ public class ImagesToPool : MonoBehaviour
 {
     [SerializeField] private ImagePool pool;
     [SerializeField] private CaptureImage capture;
+    [SerializeField] private SheepWoolManager sheepWoolManager;
 
     [SerializeField] private Camera[] cameras; //right then left
 
@@ -46,9 +47,23 @@ public class ImagesToPool : MonoBehaviour
         }
 
         reference.Right = textures[0];
-
-
         reference.Left = textures[1];
+
+        if (sheepWoolManager != null)
+        {
+            capture.CaptureRenderTexture(sheepWoolManager.WoolTexture);
+            string woolPath = $"Assets/ReferencePhotos/Reference_{pool.Images.Count}_Wool.png";
+            System.IO.File.WriteAllBytes(woolPath, capture.LastRTCapture.EncodeToPNG());
+            AssetDatabase.ImportAsset(woolPath, ImportAssetOptions.ForceSynchronousImport);
+            TextureImporter woolImporter = AssetImporter.GetAtPath(woolPath) as TextureImporter;
+            woolImporter.textureType = TextureImporterType.Default;
+            woolImporter.isReadable = true;
+            woolImporter.mipmapEnabled = false;
+            woolImporter.textureCompression = TextureImporterCompression.Uncompressed;
+            woolImporter.SaveAndReimport();
+            reference.WoolTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(woolPath);
+        }
+
         pool.Images.Add(reference);
         EditorUtility.SetDirty(pool);
         AssetDatabase.SaveAssets();

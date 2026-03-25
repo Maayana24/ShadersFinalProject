@@ -5227,6 +5227,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sheep
       objectReference: {fileID: 0}
+    - target: {fileID: 3367722999951818410, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
+      propertyPath: perlinNoiseShader
+      value: 
+      objectReference: {fileID: 4800000, guid: 81ec8d22406b9475c9233afd9b54adc8, type: 3}
+    - target: {fileID: 6291088880636508496, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6630882694585639914, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6630882694585639914, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6630882694585639914, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6630882694585639914, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6630882694585639914, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6630882694585639914, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 180
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5827,119 +5859,6 @@ Transform:
   - {fileID: 1437434243}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &580072744
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 580072748}
-  - component: {fileID: 580072747}
-  - component: {fileID: 580072746}
-  - component: {fileID: 580072745}
-  m_Layer: 3
-  m_Name: Torso
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!136 &580072745
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 580072744}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &580072746
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 580072744}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 1b477d70e90162d40b2dc1ea6919b06b, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &580072747
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 580072744}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &580072748
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 580072744}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.50000006, y: 0.50000006, z: -0.50000006, w: -0.50000006}
-  m_LocalPosition: {x: -1.38, y: 0.65, z: 3.532}
-  m_LocalScale: {x: 0.75, y: 0.5625, z: 0.75}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1001 &585254116
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6964,15 +6883,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66b13e7dbb7fd5740a36219801d0c3b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhotoCompare
-  captureImage: {fileID: 704893389}
   displayImages:
   - {fileID: 2048794270}
   - {fileID: 1057760736}
   compareShader: {fileID: 7200000, guid: c9b381baa238e0b47945c5adcdcd4d49, type: 3}
   resultText: {fileID: 1918024630}
-  cameras:
-  - {fileID: 1150550546}
-  - {fileID: 1589045286}
+  sheepWoolManager: {fileID: 1539040048}
   threshold: 1
   power: 1
   isHighDifficulty: 0
@@ -6990,6 +6906,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ImagesToPool
   pool: {fileID: 11400000, guid: 7505e9ea56bdcd3438a1ba030e1432b6, type: 2}
   capture: {fileID: 704893389}
+  sheepWoolManager: {fileID: 1539040048}
   cameras:
   - {fileID: 1150550546}
   - {fileID: 1589045286}
@@ -14464,6 +14381,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1539040048 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3367722999951818410, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
+  m_PrefabInstance: {fileID: 547508830}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01404868fd062e66d940248971efad48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SheepWoolManager
 --- !u!1 &1543279468
 GameObject:
   m_ObjectHideFlags: 0
@@ -20627,6 +20555,5 @@ SceneRoots:
   - {fileID: 1868403040}
   - {fileID: 296392252}
   - {fileID: 1804975019}
-  - {fileID: 580072748}
   - {fileID: 547508830}
   - {fileID: 2063898842}

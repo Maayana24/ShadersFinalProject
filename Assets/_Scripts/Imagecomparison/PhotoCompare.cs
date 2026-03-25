@@ -6,14 +6,16 @@ using UnityEngine.UI;
 
 public class PhotoCompare : MonoBehaviour
 {
-    [SerializeField] private CaptureImage captureImage;
     [SerializeField] private RawImage[] displayImages;
     [SerializeField] private ComputeShader compareShader;
     [SerializeField] private TextMeshProUGUI resultText;
-    [SerializeField] private Camera[] cameras;
+    [SerializeField] private SheepWoolManager sheepWoolManager;
     [SerializeField][Range(0.01f, 1)] private float threshold = 0.20f;
     [SerializeField][Range(1, 10)] private float power = 2;
     [SerializeField] private bool isHighDifficulty = false;
+
+    private Texture2D currentWoolReference;
+    private Texture2D woolSnapshot;
 
     private ComputeBuffer totalDiffBuffer;
     private ComputeBuffer totalPixelsBuffer;
@@ -28,6 +30,12 @@ public class PhotoCompare : MonoBehaviour
         totalPixelsBuffer = new ComputeBuffer(1, sizeof(int));
 
         UIManager.OnDifficultyChange += ChangeDifficulty;
+        UIManager.OnImageChanged += OnImageChanged;
+    }
+
+    private void OnImageChanged(ImageReference reference)
+    {
+        currentWoolReference = reference.WoolTexture;
     }
 
     [ContextMenu("Compare")]
@@ -89,28 +97,33 @@ public class PhotoCompare : MonoBehaviour
 
     private IEnumerator CaptureAndCompare()
     {
-        float totalScore = 0;
-        captureImage.SetSize(isHighDifficulty ? 512 : 64);
-
-        for (int i = 0; i < cameras.Length; i++)
+        if (sheepWoolManager == null || currentWoolReference == null)
         {
-            yield return StartCoroutine(captureImage.Capture(cameras[i]));
-
-            Texture2D captured = captureImage.LastCapture;
-            Texture2D reference = displayImages[i].texture as Texture2D;
-
-            totalScore += ComputeScore(captured, reference);
+            resultText.text = "Missing wool reference";
+            yield break;
         }
 
-        float avgScore = totalScore / cameras.Length;
-        resultText.text = $"Match: {avgScore * 100:F1}%";
+        yield return new WaitForEndOfFrame();
+
+        RenderTexture woolRT = sheepWoolManager.WoolTexture;
+        if (woolSnapshot != null) Destroy(woolSnapshot);
+        woolSnapshot = new Texture2D(woolRT.width, woolRT.height, TextureFormat.RGBA32, false);
+        RenderTexture prev = RenderTexture.active;
+        RenderTexture.active = woolRT;
+        woolSnapshot.ReadPixels(new Rect(0, 0, woolRT.width, woolRT.height), 0, 0);
+        woolSnapshot.Apply();
+        RenderTexture.active = prev;
+
+        float score = ComputeScore(woolSnapshot, currentWoolReference);
+        resultText.text = $"Match: {score * 100:F1}%";
     }
 
     void OnDestroy()
     {
         totalDiffBuffer?.Release();
         totalPixelsBuffer?.Release();
+        if (woolSnapshot != null) Destroy(woolSnapshot);
         UIManager.OnDifficultyChange -= ChangeDifficulty;
-
+        UIManager.OnImageChanged -= OnImageChanged;
     }
 }
