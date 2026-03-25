@@ -7229,11 +7229,11 @@ MonoBehaviour:
   compareShader: {fileID: 7200000, guid: c9b381baa238e0b47945c5adcdcd4d49, type: 3}
   resultText: {fileID: 1918024630}
   sheepWoolManager: {fileID: 1539040048}
-  displacementTolerance: 0.15
-  colorTolerance: 0.2
-  displacementWeight: 0.7
-  colorWeight: 0.3
-  wrongThreshold: 0.5
+  displacementTolerance: 0.538
+  colorTolerance: 0.788
+  displacementWeight: 0.802
+  colorWeight: 0.726
+  wrongThreshold: 0.7
   isHighDifficulty: 0
   hardDifficultyScale: 0.5
 --- !u!114 &704893388
@@ -7266,7 +7266,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6a769a2b1de870489e183fd923ff1d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CaptureImage
-  showDebug: 1
   targetImage: {fileID: 2048794270}
   size: 64
 --- !u!4 &704893390
