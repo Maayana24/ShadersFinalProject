@@ -13,6 +13,7 @@ public class SheepWoolManager : MonoBehaviour
     [SerializeField] private float noiseScale = 8f;
     [SerializeField] private float noiseMin = 0.4f;
     [SerializeField] private float noiseMax = 1f;
+    [SerializeField] private Texture2D uvMask;
 
     [Header("Displacement")]
     [SerializeField] private float maxDisplacement = 0.3f;
@@ -62,31 +63,18 @@ public class SheepWoolManager : MonoBehaviour
             worldToUVScale = 1f;
     }
 
-    // Seeds the wool texture with Perlin noise on the CPU — no shader dependency.
     private void InitializeTexture()
     {
-        float offsetX = Random.value * 100f;
-        float offsetY = Random.value * 100f;
-
-        Color[] pixels = new Color[textureSize * textureSize];
-        for (int y = 0; y < textureSize; y++)
-        {
-            for (int x = 0; x < textureSize; x++)
-            {
-                float v = y / (float)textureSize;
-                float nx = (x / (float)textureSize + offsetX) * noiseScale;
-                float ny = (v + offsetY) * noiseScale;
-                float growth = Mathf.Lerp(noiseMin, noiseMax, Mathf.PerlinNoise(nx, ny));
-                float edge = Mathf.InverseLerp(1f, 0.9f, v);
-                pixels[y * textureSize + x] = new Color(baseWoolColor.r, baseWoolColor.g, baseWoolColor.b, growth * edge);
-            }
-        }
-
-        Texture2D noiseTex = new Texture2D(textureSize, textureSize, TextureFormat.ARGB32, false);
-        noiseTex.SetPixels(pixels);
-        noiseTex.Apply();
-        Graphics.Blit(noiseTex, woolRT);
-        Destroy(noiseTex);
+        Material initMat = new Material(Shader.Find("Hidden/WoolInit"));
+        initMat.SetFloat("_OffsetX", Random.value * 100f);
+        initMat.SetFloat("_OffsetY", Random.value * 100f);
+        initMat.SetFloat("_NoiseScale", noiseScale);
+        initMat.SetFloat("_NoiseMin", noiseMin);
+        initMat.SetFloat("_NoiseMax", noiseMax);
+        initMat.SetColor("_BaseColor", baseWoolColor);
+        initMat.SetTexture("_UVMask", uvMask != null ? (Texture)uvMask : Texture2D.whiteTexture);
+        Graphics.Blit(null, woolRT, initMat);
+        Destroy(initMat);
     }
 
     private Mesh BuildInflatedMesh(Mesh source)
@@ -117,13 +105,13 @@ public class SheepWoolManager : MonoBehaviour
     {
         float uvRadius = worldRadius * worldToUVScale;
         int mode = strength > 0 ? BrushPainter.MODE_GROWTH_ADD : BrushPainter.MODE_GROWTH_SUBTRACT;
-        BrushPainter.Paint(woolRT, uv, uvRadius, Mathf.Abs(strength), Color.clear, mode);
+        BrushPainter.Paint(woolRT, uv, uvRadius, Mathf.Abs(strength), Color.clear, mode, uvMask);
     }
 
     public void PaintColor(Vector2 uv, float worldRadius, float strength, Color color)
     {
         float uvRadius = worldRadius * worldToUVScale;
-        BrushPainter.Paint(woolRT, uv, uvRadius, strength, color, BrushPainter.MODE_COLOR);
+        BrushPainter.Paint(woolRT, uv, uvRadius, strength, color, BrushPainter.MODE_COLOR, uvMask);
     }
 
     private void OnDestroy()

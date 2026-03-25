@@ -11,7 +11,7 @@ public static class BrushPainter
         return brushMat;
     }
 
-    public static void Paint(RenderTexture target, Vector2 uvCenter, float uvRadius, float strength, Color color, int mode)
+    public static void Paint(RenderTexture target, Vector2 uvCenter, float uvRadius, float strength, Color color, int mode, Texture2D uvMask = null)
     {
         Material mat = GetBrushMaterial();
         mat.SetVector("_BrushCenter", uvCenter);
@@ -19,6 +19,7 @@ public static class BrushPainter
         mat.SetFloat("_BrushStrength", strength);
         mat.SetColor("_BrushColor", color);
         mat.SetInt("_PaintMode", mode);
+        mat.SetTexture("_UVMask", uvMask != null ? (Texture)uvMask : Texture2D.whiteTexture);
 
         RenderTexture temp = RenderTexture.GetTemporary(target.descriptor);
         Graphics.Blit(target, temp);

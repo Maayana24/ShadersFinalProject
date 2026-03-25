@@ -3,6 +3,7 @@ Shader "Hidden/BrushPaint"
     Properties
     {
         [MainTexture] _BaseTexture("Base Map", 2D) = "white" {}
+        _UVMask("UV Mask", 2D) = "white" {}
         _BrushCenter("Brush Center (UV)", Vector) = (0.5, 0.5, 0, 0)
         _BrushRadius("Brush Radius (UV)", Float) = 0.1
         _BrushStrength("Brush Strength", Float) = 1.0
@@ -37,9 +38,12 @@ Shader "Hidden/BrushPaint"
 
             TEXTURE2D(_BaseTexture);
             SAMPLER(sampler_BaseTexture);
+            TEXTURE2D(_UVMask);
+            SAMPLER(sampler_UVMask);
 
             CBUFFER_START(UnityPerMaterial)
                 float4 _BaseTexture_ST;
+                float4 _UVMask_ST;
                 float4 _BrushCenter;
                 float _BrushRadius;
                 float _BrushStrength;
@@ -67,7 +71,8 @@ Shader "Hidden/BrushPaint"
                 float falloff = saturate(1.0 - length(IN.uv - _BrushCenter.xy) / _BrushRadius);
                 falloff = falloff * falloff;
 
-                float brushIntensity = falloff * _BrushStrength;
+                float mask = SAMPLE_TEXTURE2D(_UVMask, sampler_UVMask, IN.uv).r;
+                float brushIntensity = falloff * _BrushStrength * mask;
 
                 float4 sampledColor = SAMPLE_TEXTURE2D(_BaseTexture, sampler_BaseTexture, IN.uv);
                 float4 result = sampledColor + IF_TRUE_THEN(_PaintMode == PAINT_MODE_GROWTH_ADD,      float4(0, 0, 0,  brushIntensity))
