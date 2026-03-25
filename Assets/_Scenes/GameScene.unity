@@ -17532,9 +17532,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 704893387}
-        m_TargetAssemblyTypeName: PhotoCompare, Assembly-CSharp
-        m_MethodName: OnCheckButtonClicked
+      - m_Target: {fileID: 296392251}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: ChangeImage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
