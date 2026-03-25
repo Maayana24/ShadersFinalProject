@@ -22,6 +22,7 @@ public static class BrushPainter
 
         RenderTexture temp = RenderTexture.GetTemporary(target.descriptor);
         Graphics.Blit(target, temp);
+        mat.SetTexture("_BaseTexture", temp);
         Graphics.Blit(temp, target, mat);
         RenderTexture.ReleaseTemporary(temp);
     }
