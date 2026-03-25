@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 public enum SprayColor
 {
-    Red, 
-    Blue, 
-    Green, 
-    Yellow, 
-    White, 
-    Black 
+    Red,
+    Blue,
+    Green,
+    Yellow,
+    White,
+    Black
 }
 
 public class ColorSpray : Item
@@ -30,5 +30,6 @@ public class ColorSpray : Item
     public override void ApplyEffect(Vector3 worldHitPosition, Vector2 uv, GameObject hitObject)
     {
         Debug.Log($"Spray bottle: {sprayColor}, worldPos={worldHitPosition}, uv={uv}");
+        hitObject.GetComponentInParent<SheepWoolManager>()?.PaintColor(uv, radius, strength * Time.deltaTime, Color);
     }
 }

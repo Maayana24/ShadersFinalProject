@@ -140,8 +140,10 @@ public class UIManager : MonoBehaviour
         {
             hitPoint = hit.point;
             Vector2 uv = hit.textureCoord;
+            SheepWoolManager woolManager = hit.collider.GetComponentInParent<SheepWoolManager>();
+            if (woolManager == null) { Debug.LogWarning($"[UIManager] No SheepWoolManager on {hit.collider.gameObject.name} or its parents"); return false; }
             Debug.Log($"[UIManager] Hit: worldPos={hitPoint}, uv={uv}");
-            currentItem.ApplyEffect(hit.point, uv, hit.collider.gameObject);
+            currentItem.ApplyEffect(hit.point, uv, woolManager);
 
             _gizmoHitPoint = hit.point;
             _gizmoHitNormal = hit.normal;
