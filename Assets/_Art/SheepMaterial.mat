@@ -43,7 +43,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _MaxDisplacement: 0.1
+    - _MaxDisplacement: 0.4
     - _TessDistMax: 15
     - _TessDistMin: 2
     - _TessMax: 8
