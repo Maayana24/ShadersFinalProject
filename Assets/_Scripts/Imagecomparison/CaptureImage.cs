@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class CaptureImage : MonoBehaviour
 {
-    [SerializeField] private bool showDebug = true;
     [SerializeField] private RawImage targetImage;
     [SerializeField][Range(50, 1000)] private int size = 300;
 

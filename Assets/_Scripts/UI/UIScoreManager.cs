@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIScoreManager : MonoBehaviour
@@ -53,7 +54,7 @@ public class UIScoreManager : MonoBehaviour
 
     public void OnRestartButton()
     {
-        DeactivateScorePanel();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         OnRestart?.Invoke();
     }
 
