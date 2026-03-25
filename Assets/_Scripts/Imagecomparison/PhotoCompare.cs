@@ -23,14 +23,18 @@ public class PhotoCompare : MonoBehaviour
 
     public static event Action<float> OnScore;
 
+    void Awake()
+    {
+        UIManager.OnDifficultyChange += ChangeDifficulty;
+        UIManager.OnImageChanged += OnImageChanged;
+    }
+
     void Start()
     {
         _kernelIndex = compareShader.FindKernel("Compare");
         totalDiffBuffer = new ComputeBuffer(1, sizeof(int));
         totalPixelsBuffer = new ComputeBuffer(1, sizeof(int));
-
-        UIManager.OnDifficultyChange += ChangeDifficulty;
-        UIManager.OnImageChanged += OnImageChanged;
+        OnImageChanged(UIManager.CurrentReference);
     }
 
     private void OnImageChanged(ImageReference reference)

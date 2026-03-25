@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour
 
     public static event System.Action<bool> OnDifficultyChange;
     public static event System.Action<ImageReference> OnImageChanged;
+    public static ImageReference CurrentReference { get; private set; }
 
     private void Awake()
     {
@@ -134,10 +135,10 @@ public class UIManager : MonoBehaviour
     {
         if (pool.Images.Count == 0) return;
         int index = Random.Range(0, pool.Images.Count);
-        ImageReference reference = pool.Images[index];
-        images[0].texture = reference.Right;
-        images[1].texture = reference.Left;
-        OnImageChanged?.Invoke(reference);
+        CurrentReference = pool.Images[index];
+        images[0].texture = CurrentReference.Right;
+        images[1].texture = CurrentReference.Left;
+        OnImageChanged?.Invoke(CurrentReference);
     }
 
     public void OnItemButtonClicked(ItemButton button)
