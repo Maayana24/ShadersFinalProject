@@ -519,6 +519,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
   radius: 0.1
+  strength: 2
   sprayColor: 1
 --- !u!1001 &44427036
 PrefabInstance:
@@ -8335,6 +8336,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
   radius: 0.1
+  strength: 2
   sprayColor: 2
 --- !u!1001 &821883379
 PrefabInstance:
@@ -8538,6 +8540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
   radius: 0.1
+  strength: 2
   sprayColor: 4
 --- !u!1 &841500839
 GameObject:
@@ -9309,6 +9312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
   radius: 0.1
+  strength: 2
   sprayColor: 0
 --- !u!1001 &939985912
 PrefabInstance:
@@ -15290,6 +15294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Scissors
   cursor: {fileID: 21300000, guid: 14862c28db865e64380794b7321f8841, type: 3}
   radius: 0.1
+  strength: 2
 --- !u!1001 &1636784209
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16254,6 +16259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WoolGrower
   cursor: {fileID: 21300000, guid: 75dfd267240b02e49bf0cc45ffa610e2, type: 3}
   radius: 0.1
+  strength: 2
 --- !u!1001 &1780823651
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17346,6 +17352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
   radius: 0.1
+  strength: 2
   sprayColor: 5
 --- !u!1001 &1825182556
 PrefabInstance:
@@ -18955,6 +18962,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
   radius: 0.1
+  strength: 2
   sprayColor: 3
 --- !u!1001 &2020691580
 PrefabInstance:
