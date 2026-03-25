@@ -5308,6 +5308,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sheep
       objectReference: {fileID: 0}
+    - target: {fileID: 3367722999951818410, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
+      propertyPath: maxDisplacement
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 4159550762698485050, guid: 9843f84f57901b24989015eec2c123ac, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.3
