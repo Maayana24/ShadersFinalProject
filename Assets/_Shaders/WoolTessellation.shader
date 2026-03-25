@@ -4,6 +4,7 @@ Shader "Custom/WoolTessellation"
     {
         _WoolTex("Wool Map (RGB=Color, A=Growth)", 2D) = "white" {}
         _BaseColor("Base Skin Color", Color) = (0.9, 0.8, 0.7, 1)
+        _WoolEpsilon("Wool Epsilon", Float) = 0.01
         _MaxDisplacement("Max Displacement", Float) = 0.3
         _TessMin("Min Tessellation", Range(1, 16)) = 1
         _TessMax("Max Tessellation", Range(1, 64)) = 8
@@ -27,6 +28,7 @@ Shader "Custom/WoolTessellation"
         CBUFFER_START(UnityPerMaterial)
             float4 _WoolTex_ST;
             float4 _BaseColor;
+            float _WoolEpsilon;
             float _MaxDisplacement;
             float _TessMin;
             float _TessMax;
@@ -119,7 +121,9 @@ Shader "Custom/WoolTessellation"
             {
                 float4 woolSample = SAMPLE_TEXTURE2D(_WoolTex, sampler_WoolTex, IN.uv);
                 float growth = woolSample.a;
-                half3 albedo = lerp(_BaseColor.rgb, woolSample.rgb, smoothstep(0, 0.1, growth));
+
+                if (growth <= _WoolEpsilon)
+                return half4(_BaseColor.rgb, 1.0);
 
                 InputData inputData = (InputData)0;
                 inputData.positionWS = IN.positionWS;
@@ -131,7 +135,7 @@ Shader "Custom/WoolTessellation"
                 inputData.bakedGI = SampleSH(inputData.normalWS);
 
                 SurfaceData surfaceData = (SurfaceData)0;
-                surfaceData.albedo = albedo;
+                surfaceData.albedo = woolSample.rgb;
                 surfaceData.alpha = 1.0;
                 surfaceData.smoothness = 0.3;
                 surfaceData.normalTS = half3(0, 0, 1);
@@ -144,7 +148,7 @@ Shader "Custom/WoolTessellation"
                 float brushDist = length(IN.uv - _BrushUV.xy);
                 float rimWidth = max(_BrushRadius * 0.08, 0.003);
                 float rim = smoothstep(_BrushRadius - rimWidth, _BrushRadius, brushDist)
-                          * (1.0 - smoothstep(_BrushRadius, _BrushRadius + rimWidth, brushDist));
+                * (1.0 - smoothstep(_BrushRadius, _BrushRadius + rimWidth, brushDist));
                 color.rgb = lerp(color.rgb, half3(1, 1, 1), rim * _BrushActive);
 
                 return color;
