@@ -20,6 +20,12 @@ public class UIManager : MonoBehaviour
     private bool isHighDifficulty = false;
     private bool isPlayingParticles = false;
 
+    // Gizmo state
+    private Vector3 _gizmoHitPoint;
+    private Vector3 _gizmoHitNormal;
+    private Ray _gizmoRay;
+    private bool _gizmoHasHit;
+
     private bool IsHoldingItem => currentItem != null;
 
     public static event System.Action<bool> OnDifficultyChange;
@@ -106,7 +112,7 @@ public class UIManager : MonoBehaviour
         currentButton = button;
 
         cursor.sprite = currentItem.Cursor;
-        if(currentItem is ColorSpray spray)
+        if (currentItem is ColorSpray spray)
         {
             cursor.color = spray.Color;
             particleController.SetCanColor(spray.Color);
@@ -129,16 +135,43 @@ public class UIManager : MonoBehaviour
     private bool TryApplyEffect(out Vector3 hitPoint)
     {
         Ray ray = sheepCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        _gizmoRay = ray;
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, sheepLayer))
         {
             hitPoint = hit.point;
             Vector2 uv = hit.textureCoord;
             Debug.Log($"[UIManager] Hit: worldPos={hitPoint}, uv={uv}");
             currentItem.ApplyEffect(hit.point, uv, hit.collider.gameObject);
+
+            _gizmoHitPoint = hit.point;
+            _gizmoHitNormal = hit.normal;
+            _gizmoHasHit = true;
             return true;
         }
         hitPoint = Vector3.zero;
+        _gizmoHasHit = false;
         return false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Ray from camera
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(_gizmoRay.origin, _gizmoRay.direction * 10f);
+
+        if (!_gizmoHasHit) return;
+
+        // Hit point
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(_gizmoHitPoint, 0.02f);
+
+        // Normal at hit point (proxy collider surface)
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(_gizmoHitPoint, _gizmoHitNormal * 0.1f);
+
+        // Ray from hit point back toward original mesh (along -normal)
+        Gizmos.color = Color.green;
+        Gizmos.DrawRay(_gizmoHitPoint, -_gizmoHitNormal * 0.1f);
     }
 
     private void OnDestroy()
