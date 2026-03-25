@@ -5,7 +5,11 @@ Texture2D<float4> _Captured;
 RWStructuredBuffer<int> _TotalDiff;
 RWStructuredBuffer<int> _TotalPixels;
 
-float _Tolerance;
+float _AlphaTolerance;
+float _ColorTolerance;
+float _AlphaWeight;
+float _ColorWeight;
+float _WrongThreshold;
 int _Width;
 int _Height;
 
@@ -13,15 +17,22 @@ int _Height;
 void Compare(int3 id : SV_DispatchThreadID)
 {
     if ((int) id.x >= _Width || (int) id.y >= _Height)
-        return;
+    return;
 
     float4 refColor = _Reference[id.xy];
     float4 capColor = _Captured[id.xy];
 
-    float3 d = abs(refColor.rgb - capColor.rgb);
-    float diff = (d.r + d.g + d.b) / 3.0;
+    // Displacement (growth): always counts — did you shave the right areas?
+    float alphaDiff = abs(refColor.a - capColor.a);
 
-    if (diff > _Tolerance)
+    // Color: only meaningful where wool is present in either image
+    float3 d = abs(refColor.rgb - capColor.rgb);
+    float colorDiff = (d.r + d.g + d.b) / 3.0 * max(refColor.a, capColor.a);
+
+    float wrong = _AlphaWeight * step(_AlphaTolerance, alphaDiff)
+    + _ColorWeight * step(_ColorTolerance, colorDiff);
+
+    if (wrong >= _WrongThreshold)
     {
         InterlockedAdd(_TotalDiff[0], 1);
     }

@@ -10,9 +10,13 @@ public class PhotoCompare : MonoBehaviour
     [SerializeField] private ComputeShader compareShader;
     [SerializeField] private TextMeshProUGUI resultText;
     [SerializeField] private SheepWoolManager sheepWoolManager;
-    [SerializeField][Range(0.01f, 1)] private float threshold = 0.20f;
-    [SerializeField][Range(1, 10)] private float power = 2;
+    [SerializeField][Range(0f, 1f)] private float displacementTolerance = 0.1f;
+    [SerializeField][Range(0f, 1f)] private float colorTolerance        = 0.15f;
+    [SerializeField][Range(0f, 1f)] private float displacementWeight    = 0.7f;
+    [SerializeField][Range(0f, 1f)] private float colorWeight           = 0.3f;
+    [SerializeField][Range(0f, 1f)] private float wrongThreshold        = 0.7f;
     [SerializeField] private bool isHighDifficulty = false;
+    [SerializeField][Range(0.1f, 1f)] private float hardDifficultyScale = 0.5f;
 
     private Texture2D currentWoolReference;
     private Texture2D woolSnapshot;
@@ -56,6 +60,7 @@ public class PhotoCompare : MonoBehaviour
     private float ComputeScore(Texture2D captured, Texture2D reference)
     {
         int compareSize = isHighDifficulty ? 512 : 64;
+        float difficultyScale = isHighDifficulty ? hardDifficultyScale : 1f;
 
         RenderTexture capturedRT = new RenderTexture(compareSize, compareSize, 0, RenderTextureFormat.ARGB32);
         capturedRT.filterMode = FilterMode.Point;
@@ -79,8 +84,11 @@ public class PhotoCompare : MonoBehaviour
         compareShader.SetInt("_Width", compareSize);
         compareShader.SetInt("_Height", compareSize);
 
-        float tolerance = isHighDifficulty ? 0.01f : 0.04f;
-        compareShader.SetFloat("_Tolerance", tolerance);
+        compareShader.SetFloat("_AlphaTolerance", displacementTolerance * difficultyScale);
+        compareShader.SetFloat("_ColorTolerance", colorTolerance * difficultyScale);
+        compareShader.SetFloat("_AlphaWeight", displacementWeight);
+        compareShader.SetFloat("_ColorWeight", colorWeight);
+        compareShader.SetFloat("_WrongThreshold", wrongThreshold);
 
         int groupsX = Mathf.CeilToInt(compareSize / 8);
         int groupsY = Mathf.CeilToInt(compareSize / 8);

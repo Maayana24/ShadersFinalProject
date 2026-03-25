@@ -518,8 +518,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
-  radius: 0.1
-  strength: 2
   sprayColor: 1
 --- !u!1001 &44427036
 PrefabInstance:
@@ -3125,6 +3123,8 @@ MonoBehaviour:
     m_Bits: 8
   cursor: {fileID: 776054504}
   difficultyText: {fileID: 1661778189}
+  brushRadius: 0.15
+  brushStrength: 2
 --- !u!4 &296392252
 Transform:
   m_ObjectHideFlags: 0
@@ -6857,8 +6857,11 @@ MonoBehaviour:
   compareShader: {fileID: 7200000, guid: c9b381baa238e0b47945c5adcdcd4d49, type: 3}
   resultText: {fileID: 1918024630}
   sheepWoolManager: {fileID: 1539040048}
-  threshold: 1
-  power: 1
+  displacementTolerance: 0.15
+  colorTolerance: 0.2
+  displacementWeight: 0.7
+  colorWeight: 0.3
+  wrongThreshold: 0.5
   isHighDifficulty: 0
 --- !u!114 &704893388
 MonoBehaviour:
@@ -8220,8 +8223,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
-  radius: 0.1
-  strength: 2
   sprayColor: 2
 --- !u!1001 &821883379
 PrefabInstance:
@@ -8424,8 +8425,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
-  radius: 0.1
-  strength: 2
   sprayColor: 4
 --- !u!1 &841500839
 GameObject:
@@ -9196,8 +9195,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
-  radius: 0.1
-  strength: 2
   sprayColor: 0
 --- !u!1001 &939985912
 PrefabInstance:
@@ -15189,8 +15186,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scissors
   cursor: {fileID: 21300000, guid: 14862c28db865e64380794b7321f8841, type: 3}
-  radius: 0.1
-  strength: 2
 --- !u!1001 &1636784209
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16154,8 +16149,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WoolGrower
   cursor: {fileID: 21300000, guid: 75dfd267240b02e49bf0cc45ffa610e2, type: 3}
-  radius: 0.1
-  strength: 2
 --- !u!1001 &1780823651
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17247,8 +17240,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
-  radius: 0.1
-  strength: 2
   sprayColor: 5
 --- !u!1001 &1825182556
 PrefabInstance:
@@ -18857,8 +18848,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColorSpray
   cursor: {fileID: 21300000, guid: 1922fed19deceb54490267fced77e66b, type: 3}
-  radius: 0.1
-  strength: 2
   sprayColor: 3
 --- !u!1001 &2020691580
 PrefabInstance:
