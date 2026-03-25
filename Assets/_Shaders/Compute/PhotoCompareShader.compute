@@ -29,8 +29,7 @@ void Compare(int3 id : SV_DispatchThreadID)
     float3 d = abs(refColor.rgb - capColor.rgb);
     float colorDiff = (d.r + d.g + d.b) / 3.0 * max(refColor.a, capColor.a);
 
-    float wrong = _AlphaWeight * step(_AlphaTolerance, alphaDiff)
-    + _ColorWeight * step(_ColorTolerance, colorDiff);
+    float wrong = _AlphaWeight * step(_AlphaTolerance, alphaDiff) + _ColorWeight * step(_ColorTolerance, colorDiff);
 
     if (wrong >= _WrongThreshold)
     {

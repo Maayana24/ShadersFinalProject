@@ -14,7 +14,7 @@ public class PhotoCompare : MonoBehaviour
     [SerializeField][Range(0f, 1f)] private float colorTolerance        = 0.15f;
     [SerializeField][Range(0f, 1f)] private float displacementWeight    = 0.7f;
     [SerializeField][Range(0f, 1f)] private float colorWeight           = 0.3f;
-    [SerializeField][Range(0f, 1f)] private float wrongThreshold        = 0.7f;
+    [SerializeField] private float wrongThreshold = 0.7f; //fails if color or placement is wrong
     [SerializeField] private bool isHighDifficulty = false;
     [SerializeField][Range(0.1f, 1f)] private float hardDifficultyScale = 0.5f;
 

@@ -19,3 +19,6 @@ MonoBehaviour:
   - Right: {fileID: 2800000, guid: f9b7f846ad6398c4bb8aab9c8460c359, type: 3}
     Left: {fileID: 2800000, guid: c30329de2080e5b429f299718b6d6988, type: 3}
     WoolTexture: {fileID: 2800000, guid: db2d89cfadb36324da99529c008aa549, type: 3}
+  - Right: {fileID: 2800000, guid: 1b495eb1d80376a4c91987ffa0bc452c, type: 3}
+    Left: {fileID: 2800000, guid: 78d86bdc975c05547a06de17a12abd13, type: 3}
+    WoolTexture: {fileID: 2800000, guid: 70d1e21577179454b9edf7b9ea5b1351, type: 3}

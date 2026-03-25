@@ -7233,10 +7233,10 @@ MonoBehaviour:
   compareShader: {fileID: 7200000, guid: c9b381baa238e0b47945c5adcdcd4d49, type: 3}
   resultText: {fileID: 1918024630}
   sheepWoolManager: {fileID: 1539040048}
-  displacementTolerance: 0.538
-  colorTolerance: 0.788
-  displacementWeight: 0.802
-  colorWeight: 0.726
+  displacementTolerance: 0.587
+  colorTolerance: 0.351
+  displacementWeight: 0.3
+  colorWeight: 0.7
   wrongThreshold: 0.7
   isHighDifficulty: 0
   hardDifficultyScale: 0.5
@@ -7271,7 +7271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CaptureImage
   targetImage: {fileID: 2048794270}
-  size: 64
+  size: 128
 --- !u!4 &704893390
 Transform:
   m_ObjectHideFlags: 0
@@ -11325,13 +11325,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1136385240}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.05359253, y: 0.8015478, z: -0.1514245, w: -0.5759509}
-  m_LocalPosition: {x: 0.81, y: 1, z: 4.12}
+  m_LocalRotation: {x: -0.10014122, y: 0.78662115, z: -0.21595277, w: -0.56970465}
+  m_LocalPosition: {x: 0.58, y: 1.635, z: 3.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 17.727, y: 252.23001, z: 5.332}
+  m_LocalEulerAnglesHint: {x: 26.991, y: 253.19699, z: 5.701}
 --- !u!114 &1136385244
 MonoBehaviour:
   m_ObjectHideFlags: 0
