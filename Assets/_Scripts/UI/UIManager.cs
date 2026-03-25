@@ -14,6 +14,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private LayerMask sheepLayer;
     [SerializeField] private Image cursor;
     [SerializeField] private TextMeshProUGUI difficultyText;
+    [SerializeField][Range(0.01f, 1f)]  private float brushRadius   = 0.15f;
+    [SerializeField][Range(0.01f, 10f)] private float brushStrength = 2f;
 
     private Item currentItem;
     private ItemButton currentButton;
@@ -72,7 +74,7 @@ public class UIManager : MonoBehaviour
             if (woolManager != null)
             {
                 Shader.SetGlobalVector("_BrushUV", new Vector4(uv.x, uv.y, 0f, 0f));
-                Shader.SetGlobalFloat("_BrushRadius", woolManager.GetUVRadius(currentItem.Radius));
+                Shader.SetGlobalFloat("_BrushRadius", woolManager.GetUVRadius(brushRadius));
                 Shader.SetGlobalFloat("_BrushActive", 1f);
             }
 
@@ -85,7 +87,7 @@ public class UIManager : MonoBehaviour
                 else
                 {
                     Debug.Log($"[UIManager] Hit: worldPos={hit.point}, uv={uv}");
-                    currentItem.ApplyEffect(hit.point, uv, woolManager);
+                    currentItem.ApplyEffect(hit.point, uv, woolManager, brushRadius, brushStrength);
                 }
 
                 if (Mouse.current.leftButton.wasPressedThisFrame)

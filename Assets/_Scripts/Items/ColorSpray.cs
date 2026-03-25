@@ -27,9 +27,8 @@ public class ColorSpray : Item
 
     public Color Color => ColorMap[sprayColor];
     public override Particles Type { get; protected set; } = Particles.Spray;
-    public override void ApplyEffect(Vector3 worldHitPosition, Vector2 uv, SheepWoolManager woolManager)
+    public override void ApplyEffect(Vector3 worldHitPosition, Vector2 uv, SheepWoolManager woolManager, float radius, float strength)
     {
-        Debug.Log($"Spray bottle: {sprayColor}, worldPos={worldHitPosition}, uv={uv}");
         woolManager.PaintColor(uv, radius, strength * Time.deltaTime, Color);
     }
 }
