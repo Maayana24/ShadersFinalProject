@@ -12,7 +12,7 @@ All shaders share a single wool RenderTexture with this channel layout:
 - **RGB** — wool color
 - **Alpha** — wool growth/displacement amount (0 = no wool, 1 = full growth)
 
-Brush interaction works through UV-space raycasting — the player clicks the sheep mesh, the hit point is converted to UVs, and those UVs are passed to whichever shader needs them.
+Brush interaction works through UV-space raycasting — the player clicks the sheep mesh, the hit point is converted to UVs, and those UVs are passed to whichever shader needs them. All brush interactions are masked using a black-and-white UV mask (`uvmask.png`), to prevent overlap with the sheep's head.
 
 The project runs on URP (Universal Render Pipeline).
 
