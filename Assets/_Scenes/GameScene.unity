@@ -7271,7 +7271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CaptureImage
   targetImage: {fileID: 2048794270}
-  size: 128
+  size: 512
 --- !u!4 &704893390
 Transform:
   m_ObjectHideFlags: 0
