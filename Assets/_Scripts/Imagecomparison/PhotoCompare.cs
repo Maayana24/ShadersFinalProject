@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class PhotoCompare : MonoBehaviour
 {
-    [SerializeField] private RawImage[] displayImages;
     [SerializeField] private ComputeShader compareShader;
     [SerializeField] private TextMeshProUGUI resultText;
     [SerializeField] private SheepWoolManager sheepWoolManager;

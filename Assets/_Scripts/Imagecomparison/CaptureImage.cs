@@ -35,20 +35,15 @@ public class CaptureImage : MonoBehaviour
             renderTexture = new RenderTexture(w, h, 24, RenderTextureFormat.ARGB32);
         }
 
-        RenderTexture previousTarget = camera.targetTexture;
         camera.targetTexture = renderTexture;
         camera.Render();
-        camera.targetTexture = previousTarget;
 
-        RenderTexture previousActive = RenderTexture.active;
         RenderTexture.active = renderTexture;
 
         if (lastCapture != null) Destroy(lastCapture);
         lastCapture = new Texture2D(w, h, TextureFormat.RGBA32, false);
         lastCapture.ReadPixels(new Rect(0, 0, w, h), 0, 0);
         lastCapture.Apply();
-
-        RenderTexture.active = previousActive;
     }
 
     public void CaptureRenderTexture(RenderTexture source)

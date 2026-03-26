@@ -5177,7 +5177,6 @@ RectTransform:
   m_Children:
   - {fileID: 2048794272}
   - {fileID: 1057760735}
-  - {fileID: 1918024629}
   - {fileID: 1608315063}
   - {fileID: 605605192}
   - {fileID: 619138111}
@@ -7227,9 +7226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66b13e7dbb7fd5740a36219801d0c3b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhotoCompare
-  displayImages:
-  - {fileID: 2048794270}
-  - {fileID: 1057760736}
   compareShader: {fileID: 7200000, guid: c9b381baa238e0b47945c5adcdcd4d49, type: 3}
   resultText: {fileID: 1918024630}
   sheepWoolManager: {fileID: 1539040048}
@@ -7271,7 +7267,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CaptureImage
   targetImage: {fileID: 2048794270}
-  size: 128
+  size: 512
 --- !u!4 &704893390
 Transform:
   m_ObjectHideFlags: 0
@@ -11846,6 +11842,7 @@ RectTransform:
   - {fileID: 1678700487}
   - {fileID: 277191021}
   - {fileID: 553333385}
+  - {fileID: 1918024629}
   m_Father: {fileID: 543414498}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -19213,16 +19210,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1918024628}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 543414498}
+  m_Father: {fileID: 1190027952}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 489.99994}
   m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1918024630
